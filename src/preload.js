@@ -1,0 +1,11 @@
+const { contextBridge, ipcRenderer } = require("electron");
+
+contextBridge.exposeInMainWorld("electronAPI", {
+  showContextMenu: () => ipcRenderer.send("show-context-menu"),
+  moveWindowBy: (dx, dy) => ipcRenderer.send("move-window-by", dx, dy),
+  onStateChange: (callback) => ipcRenderer.on("state-change", (_, state, svg) => callback(state, svg)),
+  onEyeMove: (callback) => ipcRenderer.on("eye-move", (_, dx, dy) => callback(dx, dy)),
+  onWakeFromDoze: (callback) => ipcRenderer.on("wake-from-doze", () => callback()),
+  pauseCursorPolling: () => ipcRenderer.send("pause-cursor-polling"),
+  resumeFromReaction: () => ipcRenderer.send("resume-from-reaction"),
+});
