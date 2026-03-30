@@ -40,6 +40,18 @@ function syncClawdHooks() {
   }
 }
 
+function syncCursorHooks() {
+  try {
+    const { registerCursorHooks } = require("../hooks/cursor-install.js");
+    const { added, updated } = registerCursorHooks({ silent: true, port: getHookServerPort() });
+    if (added > 0 || updated > 0) {
+      console.log(`Clawd: synced Cursor hooks (added ${added}, updated ${updated})`);
+    }
+  } catch (err) {
+    console.warn("Clawd: failed to sync Cursor hooks:", err.message);
+  }
+}
+
 function sendStateHealthResponse(res) {
   const body = JSON.stringify({ ok: true, app: CLAWD_SERVER_ID, port: getHookServerPort() });
   res.writeHead(200, {
@@ -128,7 +140,7 @@ function startHttpServer() {
           const cwd = typeof data.cwd === "string" ? data.cwd : "";
           const editor = (data.editor === "code" || data.editor === "cursor") ? data.editor : null;
           const pidChain = Array.isArray(data.pid_chain) ? data.pid_chain.filter(n => Number.isFinite(n) && n > 0) : null;
-          const rawAgentPid = data.agent_pid ?? data.claude_pid;
+          const rawAgentPid = data.agent_pid ?? data.claude_pid ?? data.cursor_pid;
           const agentPid = Number.isFinite(rawAgentPid) && rawAgentPid > 0 ? Math.floor(rawAgentPid) : null;
           const agentId = typeof data.agent_id === "string" ? data.agent_id : "claude-code";
           const host = typeof data.host === "string" ? data.host : null;
@@ -289,6 +301,7 @@ function startHttpServer() {
     writeRuntimeConfig(activeServerPort);
     console.log(`Clawd state server listening on 127.0.0.1:${activeServerPort}`);
     syncClawdHooks();
+    syncCursorHooks();
     watchSettingsForHookLoss();
   });
 
@@ -301,6 +314,6 @@ function cleanup() {
   if (httpServer) httpServer.close();
 }
 
-return { startHttpServer, getHookServerPort, syncClawdHooks, cleanup };
+return { startHttpServer, getHookServerPort, syncClawdHooks, syncCursorHooks, cleanup };
 
 };
