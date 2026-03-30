@@ -32,6 +32,9 @@ describe("Agent Registry", () => {
 
     const copilot = registry.getAgent("copilot-cli");
     assert.deepStrictEqual(copilot.processNames.win, ["copilot.exe"]);
+
+    const cursor = registry.getAgent("cursor-agent");
+    assert.deepStrictEqual(cursor.processNames.win, ["Cursor.exe"]);
   });
 
   it("should include explicit Linux process names", () => {
@@ -43,30 +46,21 @@ describe("Agent Registry", () => {
 
     const copilot = registry.getAgent("copilot-cli");
     assert.deepStrictEqual(copilot.processNames.linux, ["copilot"]);
-  });
 
-  it("should leave cursor-agent process names empty (hook-driven; no IDE startup match)", () => {
-    const c = registry.getAgent("cursor-agent");
-    assert.deepStrictEqual(c.processNames.mac, []);
-    assert.deepStrictEqual(c.processNames.win, []);
-    assert.deepStrictEqual(c.processNames.linux, []);
+    const cursor = registry.getAgent("cursor-agent");
+    assert.deepStrictEqual(cursor.processNames.linux, ["cursor", "Cursor"]);
   });
 
   it("should aggregate all process names", () => {
     const all = registry.getAllProcessNames();
-    assert.ok(all.length >= 3);
-    const expectedIds = new Set(registry.getAllAgents().map((a) => a.id));
-    const agentIdsFromNames = new Set(all.map((p) => p.agentId));
-    for (const id of expectedIds) {
-      if (id === "cursor-agent") {
-        assert.ok(
-          !agentIdsFromNames.has("cursor-agent"),
-          "cursor-agent has no process names for startup polling"
-        );
-        continue;
-      }
-      assert.ok(agentIdsFromNames.has(id), `expected process row for ${id}`);
-    }
+    assert.ok(all.length >= 4);
+    const names = all.map((p) => p.name);
+    // Should contain at least one entry per agent (platform-dependent)
+    const agentIds = [...new Set(all.map((p) => p.agentId))];
+    assert.ok(agentIds.includes("claude-code"));
+    assert.ok(agentIds.includes("codex"));
+    assert.ok(agentIds.includes("copilot-cli"));
+    assert.ok(agentIds.includes("cursor-agent"));
   });
 
   it("should have correct capabilities", () => {

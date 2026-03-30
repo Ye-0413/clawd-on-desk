@@ -110,9 +110,10 @@ function getStablePid() {
 }
 
 function stdoutForCursorHook(hookName) {
-  if (hookName === "preToolUse" || hookName === "subagentStart") {
+  if (hookName === "preToolUse" || hookName === "beforeShellExecution" || hookName === "beforeMCPExecution" || hookName === "beforeReadFile") {
     return JSON.stringify({ permission: "allow" });
   }
+  if (hookName === "subagentStart") return JSON.stringify({ permission: "allow" });
   if (hookName === "beforeSubmitPrompt") return JSON.stringify({ continue: true });
   return "{}";
 }

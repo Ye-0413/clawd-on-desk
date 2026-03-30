@@ -39,6 +39,7 @@ function writeJsonAtomic(filePath, data) {
  * @param {object} [options]
  * @param {boolean} [options.silent]
  * @param {string} [options.hooksPath]
+ * @param {number} [options.port]
  * @returns {{ added: number, skipped: number, updated: number }}
  */
 function registerCursorHooks(options = {}) {

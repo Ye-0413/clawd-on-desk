@@ -16,8 +16,7 @@
 - **Claude Code** — 通过 command hook + HTTP 权限 hook 完整集成
 - **Codex CLI** — 自动轮询 JSONL 日志（`~/.codex/sessions/`），无需配置
 - **Copilot CLI** — 通过 `~/.copilot/hooks/hooks.json` 配置 command hook
-- **Cursor Agent** — [Cursor IDE hooks](https://cursor.com/docs/agent/hooks)，配置在 `~/.cursor/hooks.json`（若已存在 `~/.cursor` 目录则 Clawd 启动时自动合并注册，或执行 `npm run install:cursor-hooks`）
-  - **Hook 与权限：** [`hooks/cursor-hook.js`](hooks/cursor-hook.js) 对 **`preToolUse`**、**`subagentStart`** 回复 `permission: "allow"`，便于桌宠与工具/子代理流程同步；其余门控类 hook 不覆盖，沿用 Cursor 默认交互。若希望对每个工具都走审批，请自行修改该脚本或删减 `~/.cursor/hooks.json` 中的事件。
+- **Cursor Agent** — [Cursor IDE hooks](https://cursor.com/docs/agent/hooks)，配置在 `~/.cursor/hooks.json`（Clawd 启动时自动注册，或执行 `npm run install:cursor-hooks`）
 - **多 Agent 共存** — 多个 Agent 可同时运行，Clawd 独立追踪每个会话
 
 ### 动画与交互

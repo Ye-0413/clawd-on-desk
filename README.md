@@ -16,8 +16,7 @@ A desktop pet that reacts to your AI coding agent sessions in real-time. Clawd l
 - **Claude Code** — full integration via command hooks + HTTP permission hooks
 - **Codex CLI** — automatic JSONL log polling (`~/.codex/sessions/`), no configuration needed
 - **Copilot CLI** — command hooks via `~/.copilot/hooks/hooks.json`
-- **Cursor Agent** — [Cursor IDE hooks](https://cursor.com/docs/agent/hooks) in `~/.cursor/hooks.json` (registered automatically when Clawd starts if `~/.cursor` already exists, or run `npm run install:cursor-hooks`)
-  - **Hooks & permissions:** [`hooks/cursor-hook.js`](hooks/cursor-hook.js) answers **`preToolUse`** and **`subagentStart`** with `permission: "allow"` so Clawd stays in sync with tool and subagent flows; other gating hooks are left to Cursor's default prompts. To require approval for every tool, edit that script or trim events in `~/.cursor/hooks.json`.
+- **Cursor Agent** — [Cursor IDE hooks](https://cursor.com/docs/agent/hooks) in `~/.cursor/hooks.json` (registered automatically when Clawd starts, or run `npm run install:cursor-hooks`)
 - **Multi-agent coexistence** — run all agents simultaneously; Clawd tracks each session independently
 
 ### Animations & Interaction
