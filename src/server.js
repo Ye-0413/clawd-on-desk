@@ -42,8 +42,10 @@ function syncClawdHooks() {
 
 function syncCursorHooks() {
   try {
+    const cursorDir = path.join(os.homedir(), ".cursor");
+    if (!fs.existsSync(cursorDir)) return;
     const { registerCursorHooks } = require("../hooks/cursor-install.js");
-    const { added, updated } = registerCursorHooks({ silent: true, port: getHookServerPort() });
+    const { added, updated } = registerCursorHooks({ silent: true });
     if (added > 0 || updated > 0) {
       console.log(`Clawd: synced Cursor hooks (added ${added}, updated ${updated})`);
     }

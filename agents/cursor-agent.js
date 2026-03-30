@@ -4,11 +4,8 @@
 module.exports = {
   id: "cursor-agent",
   name: "Cursor Agent",
-  processNames: {
-    win: ["Cursor.exe"],
-    mac: ["Cursor"],
-    linux: ["cursor", "Cursor"],
-  },
+  // Hook-driven only; the IDE binary is not a reliable active-agent-session signal for startup recovery.
+  processNames: { win: [], mac: [], linux: [] },
   nodeCommandPatterns: [],
   eventSource: "hook",
   eventMap: {
